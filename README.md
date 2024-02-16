@@ -24,11 +24,13 @@ Once explanations on vanilla datasets are generated, we can plot them using the 
     python examples_comparison.py --config_file ../config_files/comparison/MNIST.yaml
 # Evaluating explanations
 Evaluation is done using the evaluate.py script and the results will be stored in the *results* folder.
+    
     cd src
     python evaluate.py --config_file ../config_files/evaluate/CIFAR/resnet_corrupt_influence.yaml
 
 After evaluating different methods with the Label Poisoning Experiment metric, the results files can be stored in a directory to use the *plot_poisoning_curves.py* to plot the poisoning detection curves produced by the explanations.
 
 Evaluation configurations can be used to generate feature-level attributions on vanilla datasets using DualView or Representer Points explanations:
+    
     python examples_comparison.py --config_file ../config_files/evaluate/CIFAR/resnet_std_dualview.yaml
 
