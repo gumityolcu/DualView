@@ -1,0 +1,3 @@
+/home/fe/yolcu/Documents/Code/THESIS/evaluation/solvers/interfaces/Shark-4.0.0/cmake-build-debug/CMakeFiles/Shark_4_0_0.dir
+/home/fe/yolcu/Documents/Code/THESIS/evaluation/solvers/interfaces/Shark-4.0.0/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/fe/yolcu/Documents/Code/THESIS/evaluation/solvers/interfaces/Shark-4.0.0/cmake-build-debug/CMakeFiles/rebuild_cache.dir

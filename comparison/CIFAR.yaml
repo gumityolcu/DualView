@@ -1,0 +1,31 @@
+class_groups:
+- - 0
+  - 1
+- - 2
+  - 3
+- - 4
+  - 5
+- - 6
+  - 7
+- - 8
+  - 9
+coef_root: <project_root>/explanations/CIFAR/std/resnet_std/mcsvm
+data_root: <data_root>
+dataset_name: CIFAR
+dataset_type: std
+device: cuda
+model_name: resnet
+model_path: <project_root>/checkpoints/CIFAR/std/resnet_std/CIFAR_resnet
+num_classes: 10
+save_dir: <project_root>/test_output
+validation_size: 2000
+xpl_roots:
+- <project_root>/explanations/CIFAR/std/resnet_std/mcsvm
+- <project_root>/explanations/CIFAR/std/resnet_std/influence
+- <project_root>/explanations/CIFAR/std/resnet_std/representer
+- <project_root>/explanations/CIFAR/std/resnet_std/rp_similarity
+method_names:
+- DV
+- IF
+- RP
+- SIM-rp

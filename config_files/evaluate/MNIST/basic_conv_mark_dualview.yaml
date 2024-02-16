@@ -1,0 +1,24 @@
+C: 0.001
+class_groups:
+- - 0
+  - 1
+- - 2
+  - 3
+- - 4
+  - 5
+- - 6
+  - 7
+- - 8
+  - 9
+coef_root: <project_root>/explanations/MNIST/mark/basic_conv_mark/dualview_0.001
+data_root: <data_root>
+dataset_name: MNIST
+dataset_type: mark
+device: cuda
+model_name: basic_conv
+model_path: <project_root>/checkpoints/MNIST/mark/basic_conv_mark/MNIST_basic_conv
+num_classes: 10
+save_dir: <project_root>/results/
+validation_size: 2000
+xai_method: dualview
+xpl_root: <project_root>/explanations/MNIST/mark/basic_conv_mark/dualview_0.001

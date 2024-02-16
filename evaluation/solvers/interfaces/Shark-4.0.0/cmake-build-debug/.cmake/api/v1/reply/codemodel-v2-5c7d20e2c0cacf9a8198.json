@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.24"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Shark_4_0_0",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Shark_4_0_0::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Shark_4_0_0-Debug-2faac9d02e4db2a6ed2d.json",
+					"name" : "Shark_4_0_0",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/fe/yolcu/Documents/Code/THESIS/evaluation/solvers/interfaces/Shark-4.0.0/cmake-build-debug",
+		"source" : "/home/fe/yolcu/Documents/Code/THESIS/evaluation/solvers/interfaces/Shark-4.0.0"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
