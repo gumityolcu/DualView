@@ -1,6 +1,6 @@
 DualView: Data Attribution From the Dual Perspective
 
-This repository implements the experiments for the paper ---
+This repository implements the experiments for the paper [DualView: Data Attribution from the Dual Perspective](https://arxiv.org/abs/2402.12118)
 
 The repository contains the code used to generate and evaluate post-hoc local data attribution of torch models using four evaluation criteria and four explanation methods. These include DualView, Influence Functions and Representer Point Selection. [Shark ML library](https://github.com/Shark-ML/Shark) has been used for DualView explanations. Open source implementations have been used for [Influence Functions](https://github.com/nimarb/pytorch_influence_functions) and [Representer Points](https://github.com/chihkuanyeh/Representer_Point_Selection).
 
