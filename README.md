@@ -31,8 +31,7 @@ Evaluation is done using the evaluate.py script and the results will be stored i
     python evaluate.py --config_file ../config_files/evaluate/CIFAR/resnet_corrupt_influence.yaml
 
 After evaluating different methods with the Label Poisoning Experiment metric, the results files can be stored in a directory to use the *plot_poisoning_curves.py* to plot the poisoning detection curves produced by the explanations.
-![](img/MNIST_label_posioning_curve-1.png)
-<img src="img/MNIST_label_posioning_curve-1.png" alt="image" width="300" height="auto">
+<img src="img/MNIST_label_posioning_curve-1.png" alt="image" width="500" height="auto">
 
 Evaluation configurations can be used to generate feature-level attributions on vanilla datasets using DualView or Representer Points explanations:
     
