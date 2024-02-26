@@ -20,6 +20,10 @@ The *batch_size* and *number_of_batches_per_file* fields should be changed accor
 Once explanations on vanilla datasets are generated, we can plot them using the comparison scripts:
 
     python examples_comparison.py --config_file ../config_files/comparison/MNIST.yaml
+   
+Here are example results:
+![](img/CIFAR-1.png)
+![](img/whiteMNIST-1.png)
 # Evaluating explanations
 Evaluation is done using the evaluate.py script and the results will be stored in the *results* folder.
     
@@ -27,8 +31,10 @@ Evaluation is done using the evaluate.py script and the results will be stored i
     python evaluate.py --config_file ../config_files/evaluate/CIFAR/resnet_corrupt_influence.yaml
 
 After evaluating different methods with the Label Poisoning Experiment metric, the results files can be stored in a directory to use the *plot_poisoning_curves.py* to plot the poisoning detection curves produced by the explanations.
+![](img/MNIST_label_posioning_curve-1.png)
 
 Evaluation configurations can be used to generate feature-level attributions on vanilla datasets using DualView or Representer Points explanations:
     
     python examples_comparison.py --config_file ../config_files/evaluate/CIFAR/resnet_std_dualview.yaml
 
+![](img/white_feature_attribution_single_outline-1.png)
