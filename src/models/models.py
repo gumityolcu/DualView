@@ -73,14 +73,11 @@ class BasicModel(Module):
         x = self.features(x)
         return self.classifier(x)
 
+    def influence_named_parameters(self):
+       return [("classifier.weight", self.classifier.weight)]
+
     def sim_parameters(self):
         return self.parameters()
-
-    def xpl_parameters(self):
-        return [self.classifier.weight]
-
-    def xpl_named_parameters(self):
-        return [("classifier.weight", self.classifier.weight)]
 
 
 class BasicConvModel(BasicModel):
@@ -110,7 +107,6 @@ class BasicConvModel(BasicModel):
             leaky=leaky,
             input_shape=input_shape
         )
-
 
 class CIFARResNet(Module):
     def __init__(self, model, device):
@@ -146,12 +142,73 @@ class CIFARResNet(Module):
         x = self.classifier(x)
         return x
 
-    def if_parameters(self):
-        # return self.parameters()
+    def xpl_parameters(self):
+        #return self.parameters()
         return [self.classifier.weight]
 
     def sim_parameters(self):
         return self.parameters()
+        #return [self.classifier.weight]
 
-    def if_named_parameters(self):
-        return [("classifier.weight", self.classifier.weight)]
+    def influence_named_parameters(self):
+       return [("classifier.weight", self.classifier.weight)]
+
+
+
+class ResNetWrapper(Module):
+    def __init__(self, model, device):
+        super().__init__()
+        self.model = model
+
+        self.features = Sequential()
+        self.features.add_module("conv1", model.conv1)
+        self.features.add_module("bn1", model.bn1)
+        self.features.add_module("relu", model.relu)
+        self.features.add_module("maxpool", model.maxpool)
+        self.features.add_module("layer1", model.layer1)
+        self.features.add_module("layer2", model.layer2)
+        self.features.add_module("layer3", model.layer3)
+        self.features.add_module("layer4", model.layer4)
+        self.features.add_module("avgpool", model.avgpool)
+        self.features.add_module("flatten", torch.nn.Flatten())
+        self.features.to(device)
+
+        self.classifier = model.fc
+        self.classifier.to(device)
+
+    def forward(self, x):
+        x = self.features(x)
+        x = self.classifier(x)
+        return x
+
+    def xpl_parameters(self):
+        return [self.classifier.weight]
+
+
+#   def xpl_named_parameters(self):
+#       return [("classifier.classifier1.weight", self.classifier.classifier1.weight)]
+
+if __name__ == '__main__':
+    model = BasicConvModel(input_shape=(1, 32, 32))
+    x = torch.rand(size=(100, 3, 32, 32))
+    print(model(x).shape)
+
+
+class BasicFCModel(BasicModel):
+    default_fc = {
+        'num': 5,
+        'features': [500, 300, 300, 200, 100]
+    }
+
+    def __init__(self, input_shape, num_classes, fc=None, bias=False, leaky=False):
+        if fc is None:
+            fc = BasicFCModel.default_fc
+
+        super(BasicFCModel, self).__init__(
+            num_classes=num_classes,
+            convs=None,
+            fc=fc,
+            bias=bias,
+            leaky=leaky,
+            input_shape=input_shape
+        )
