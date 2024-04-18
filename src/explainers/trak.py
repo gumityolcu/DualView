@@ -1,5 +1,5 @@
 from trak import TRAKer
-from trak.projectors import CudaProjector, ChunkedCudaProjector, FunctionalProjector
+from trak.projectors import CudaProjector, ChunkedCudaProjector
 from utils.explainers import Explainer
 from trak.projectors import ProjectionType
 import torch

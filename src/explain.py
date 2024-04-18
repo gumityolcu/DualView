@@ -2,10 +2,9 @@ import argparse
 import torch
 from utils import xplain
 from utils.explainers import GradientProductExplainer
-from explainers import TRAK, MCSVMExplainer, RepresenterPointsExplainer, SimilarityExplainer, RPSimilarityExplainer, \
-    TracInExplainer, InfluenceFunctionExplainer
+from explainers import TRAK, DualView, RepresenterPointsExplainer, SimilarityExplainer, RPSimilarityExplainer, InfluenceFunctionExplainer
 from utils.data import load_datasets_reduced
-from utils.models import compute_accuracy, load_model, load_cifar_model, load_imagenet_model
+from utils.models import compute_accuracy, load_model, load_cifar_model
 import yaml
 import logging
 import os
@@ -18,7 +17,7 @@ def load_explainer(xai_method, model_path, save_dir, dataset_name):
         'rp_similarity': (RPSimilarityExplainer, {"dir": save_dir, 'dimensions': 128}),
         'tracin': (TracInExplainer, {"ckpt_dir": os.path.dirname(model_path)}),
         'trak': (TRAK, {'proj_dim': 512}),
-        'mcsvm': (MCSVMExplainer, {"sanity_check": True, "dir": save_dir}),
+        'mcsvm': (DualView, {"sanity_check": True, "dir": save_dir}),
         'gradprod': (GradientProductExplainer, {}),
         'influence': (InfluenceFunctionExplainer,
                       {'depth': 50, 'repeat': 1200} if dataset_name == "MNIST" else {'depth': 50, 'repeat': 1000})
