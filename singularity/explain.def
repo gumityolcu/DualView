@@ -1,0 +1,32 @@
+Bootstrap: docker
+From: pytorch/pytorch:1.12.1-cuda11.3-cudnn8-runtime
+
+%files
+
+  ../evaluation /opt
+
+%post
+
+  export "PATH=/opt/conda/bin:$PATH"
+  conda install --yes \
+    python==3.7.5 \
+    numpy \
+    matplotlib \
+    xmltodict \
+    pyyaml \
+    tqdm \
+    scikit-learn \
+    scikit-image \
+    scipy \
+    seaborn \
+    termcolor \
+
+  pip install zennit
+  pip install tensorboard
+  pip install pytorch-lightning
+%runscript
+
+  cd /opt/evaluation
+  pwd
+  ls
+  python explain.py "$@"
