@@ -3,7 +3,7 @@ From: pytorch/pytorch:1.12.1-cuda11.3-cudnn8-runtime
 
 %files
 
-  ../evaluation /opt
+  ../src /opt
 
 %post
 
@@ -23,10 +23,9 @@ From: pytorch/pytorch:1.12.1-cuda11.3-cudnn8-runtime
 
   pip install zennit
   pip install tensorboard
-  pip install pytorch-lightning
 %runscript
 
-  cd /opt/evaluation
+  cd /opt/src
   pwd
   ls
   python explain.py "$@"
