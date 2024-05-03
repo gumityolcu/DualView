@@ -15,10 +15,10 @@ def load_explainer(xai_method, model_path, save_dir, dataset_name):
         'representer': (RepresenterPointsExplainer, {}),
         'similarity': (SimilarityExplainer, {}),
         'rp_similarity': (RPSimilarityExplainer, {"dir": save_dir, 'dimensions': 128}),
-        'tracin': (TracInExplainer, {"ckpt_dir": os.path.dirname(model_path)}),
+        #'tracin': (TracInExplainer, {"ckpt_dir": os.path.dirname(model_path)}),
         'trak': (TRAK, {'proj_dim': 512}),
-        'mcsvm': (DualView, {"sanity_check": True, "dir": save_dir}),
-        'gradprod': (GradientProductExplainer, {}),
+        'mcsvm': (DualView, {"dir": save_dir}),
+        # 'gradprod': (GradientProductExplainer, {}),
         'influence': (InfluenceFunctionExplainer,
                       {'depth': 50, 'repeat': 1200} if dataset_name == "MNIST" else {'depth': 50, 'repeat': 1000})
     }
@@ -62,7 +62,6 @@ def explain_model(model_name, model_path, device, class_groups,
         model.load_state_dict(checkpoint["model_state"])
     model.to(device)
     model.eval()
-    err = None
     # if accuracy:
     #    acc, err = compute_accuracy(model, test,device)
     #    print(f"Accuracy: {acc}")
@@ -78,7 +77,6 @@ def explain_model(model_name, model_path, device, class_groups,
         explainer_cls=explainer_cls,
         kwargs=kwargs,
         batch_size=batch_size,
-        err=err,
         num_batches_per_file=num_batches_per_file,
         save_dir=save_dir,
         start_file=start_file,

@@ -5,6 +5,8 @@ import time
 from copy import deepcopy
 from utils.csv_io import read_matrix, write_data
 from utils.explainers import FeatureKernelExplainer
+from struct import pack
+from tqdm import tqdm
 
 class DualView(FeatureKernelExplainer):
     name = "DualViewExplainer"
@@ -37,12 +39,23 @@ class DualView(FeatureKernelExplainer):
     def train(self):
         tstart = time.time()
         normalized_samples=self.normalize_features(self.samples)
+        
         if not os.path.isfile(os.path.join(self.dir, "samples_tensor")):
             torch.save(normalized_samples,os.path.join(self.dir, "samples_tensor"))
         if not os.path.isfile(os.path.join(self.dir, "labels_tensor")):
             torch.save(self.labels,os.path.join(self.dir, "labels_tensor"))
-        if not os.path.isfile(os.path.join(self.dir, "data.csv")):
-            write_data(normalized_samples, self.labels, os.path.join(self.dir, "data.csv"))
+        
+        if not os.path.isfile(os.path.join(self.dir,"data.shark")):
+           with open(os.path.join(self.dir,"data.shark"),"wb+") as fdata:
+                for dp in tqdm(normalized_samples):
+                    fdata.write(pack(f'{len(dp)}f', *dp))
+        with open(os.path.join(self.dir,"labels.shark"),"wb+") as flabels:
+            print("Writing labels")
+            flabels.write(pack('I', self.normalized_samples.shape[1])) #first line is the number of features
+            flabels.write(pack(f'{len(self.labels)}I', *self.labels))
+
+        #if not os.path.isfile(os.path.join(self.dir, "data.csv")):
+            #write_data(normalized_samples, self.labels, os.path.join(self.dir, "data.csv"))
         if not os.path.isfile(os.path.join(self.dir, "weights.csv")):
             subprocess.run(['solvers/interfaces/Shark-4.0.0/solver', self.dir, str(self.C)])
         elapsed_time = time.time() - tstart
