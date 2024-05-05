@@ -173,7 +173,7 @@ def evaluate(model_name, model_path, device, class_groups,
     fname_root=f"{dataset_name}_{dataset_type}_{xpl_root.split('/')[-1]}"
     acc, all_indices = compute_accuracy(model, test, device=device)
     all_indices=all_indices[:100]
-    file_list = [f for f in os.listdir(xpl_root) if ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f) and ("tensor" not in f)]
+    file_list = [f for f in os.listdir(xpl_root) if ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f) and ("tensor" not in f) and (".shark" not in f)]
     file_root = file_list[0].split('_')[0]
     cur_index = 0
     cumul_xpl = torch.empty(0, len(train), dtype=torch.float32)
@@ -387,7 +387,7 @@ def generate_sample_pixel_attributions(model, train, test, cumul_xpl, indices, s
     #acc, indices = compute_accuracy(model, test, device=device)
     #indices=indices[:min(len(indices),100)]
     xpl_mode = "test" if xpl_test else "train"
-    #file_list = [f for f in os.listdir(xpl_root) if ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f)]
+    #file_list = [f for f in os.listdir(xpl_root) if ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f) and (".shark" not in f)]
     #file_root = file_list[0].split('_')[0]
     #cur_index = 0
     #cumul_xpl = torch.empty(0, len(train), dtype=torch.float32)
@@ -567,7 +567,7 @@ def generate_all_pixel_attributions(model, train, test, cumul_xpl, indices, save
     composite_cls=composite_cls_dict[composite]
     #acc, indices = compute_accuracy(model, test, device=device)
     #indices=indices[:min(len(indices),100)]
-    #file_list = [f for f in os.listdir(xpl_root) if ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f)]
+    #file_list = [f for f in os.listdir(xpl_root) if ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f) and (".shark" not in f)]
     #file_root = file_list[0].split('_')[0]
     #cur_index = 0
     #cumul_xpl = torch.empty(0, len(train), dtype=torch.float32)
@@ -768,7 +768,7 @@ def generate_all_pixel_attributions_MNIST(model, train, test, cumul_xpl, indices
     composite_cls=composite_cls_dict[composite]
     #acc, indices = compute_accuracy(model, test, device=device)
     #indices=indices[:min(len(indices),100)]
-    #file_list = [f for f in os.listdir(xpl_root) if ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f)]
+    #file_list = [f for f in os.listdir(xpl_root) if ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f) and (".shark" not in f)]
     #file_root = file_list[0].split('_')[0]
     #cur_index = 0
     #cumul_xpl = torch.empty(0, len(train), dtype=torch.float32)
