@@ -14,7 +14,8 @@ import torch
 import matplotlib.pyplot as plt
 from datasets.MNIST import MNIST
 from torch.utils.data import DataLoader
-from torch.optim import SGD, lr_scheduler
+from torch.optim import SGD
+from torch.optim.lr_scheduler import ConstantLR
 from torch.utils.tensorboard import SummaryWriter
 from utils.data import load_datasets_reduced
 
@@ -61,16 +62,27 @@ def get_validation_loss(model, ds, loss, device):
     model.train()
     return l
 
+def load_scheduler(name, optimizer):
+    return ConstantLR(optimizer=optimizer, last_epoch=-1 ) 
+
+def load_optimizer(name, model, lr):
+    return SGD(model.parameters(), lr=lr, momentum=0.9)
+
+def load_augmentation(name):
+    return None
+
+def load_loss(name):
+    return CrossEntropyLoss()
 
 def start_training(model_name, device, num_classes, class_groups, data_root, epochs,
                    batch_size, lr, save_dir, save_each, model_path, base_epoch,
-                   dataset_name, dataset_type, num_batches_eval, validation_size, scheduler):
+                   dataset_name, dataset_type, num_batches_eval, validation_size, augmentation, optimizer, scheduler, loss):
     if not torch.cuda.is_available():
         device="cpu"
     if dataset_type=="group":
         num_classes=len(class_groups)
     model = load_model(model_name, dataset_name, num_classes).to(device)
-    tensorboarddir = f'{model_name}_{lr}'
+    tensorboarddir = f"{model_name}_{lr}_{scheduler}_{optimizer}{f'_aug' if augmentation is not None else ''}"
     tensorboarddir = os.path.join(save_dir, tensorboarddir)
     writer = SummaryWriter(tensorboarddir)
 
@@ -80,10 +92,11 @@ def start_training(model_name, device, num_classes, class_groups, data_root, epo
     validation_epochs = []
     val_acc = []
     train_acc = []
-    opt = SGD(params=list(model.parameters()), lr=lr, momentum=0.0)
-    if scheduler is not None:
-        scheduler = lr_scheduler.ExponentialLR(optimizer=opt,gamma=0.95)
-
+    loss=load_loss()
+    optimizer = load_optimizer(optimizer, model, lr)
+    scheduler = load_scheduler(scheduler, optimizer)
+    if augmentation is not None:
+        augmentation = load_augmentation(augmentation)
 
     kwargs = {
         'data_root': data_root,
@@ -97,17 +110,18 @@ def start_training(model_name, device, num_classes, class_groups, data_root, epo
     ds, valds = load_datasets_reduced(dataset_name, dataset_type, kwargs)
     loader = DataLoader(ds, batch_size=batch_size, shuffle=True)
     saved_files = []
-    loss = CrossEntropyLoss()
 
     if model_path is not None:
         checkpoint = torch.load(model_path, map_location=device)
         model.load_state_dict(checkpoint["model_state"])
-        opt.load_state_dict(checkpoint["optimizer_state"])
+        optimizer.load_state_dict(checkpoint["optimizer_state"])
+        scheduler.load_state_dict(checkpoint["scheduler_state"])
         train_losses = checkpoint["train_losses"]
         validation_losses = checkpoint["validation_losses"]
         validation_epochs = checkpoint["validation_epochs"]
         val_acc = checkpoint["validation_accuracy"]
         train_acc = checkpoint["train_accuracy"]
+    model.train()
 
     for i,r in enumerate(learning_rates):
         writer.add_scalar('Metric/lr', r, i)
@@ -125,7 +139,7 @@ def start_training(model_name, device, num_classes, class_groups, data_root, epo
     best_loss_yet = None
 
     if not os.path.isdir(save_dir):
-        os.mkdir(save_dir)
+        os.makedirs(save_dir,exist_ok=True)
     for e in range(epochs):
         y_true = torch.empty(0, device=device)
         y_out = torch.empty((0, num_classes), device=device)
@@ -134,9 +148,13 @@ def start_training(model_name, device, num_classes, class_groups, data_root, epo
         for inputs, targets in tqdm(iter(loader)):
             inputs = inputs.to(device)
             targets = targets.to(device)
+        
+            if augmentation is not None:
+                inputs=augmentation(inputs)
+
             y_true = torch.cat((y_true, targets), 0)
 
-            opt.zero_grad()
+            optimizer.zero_grad()
             logits = model(inputs)
             l = loss(logits, targets)
             y_out = torch.cat((y_out, logits.detach().clone()), 0)
@@ -145,7 +163,8 @@ def start_training(model_name, device, num_classes, class_groups, data_root, epo
                     os.mkdir("broken_model")
                 save_dict = {
                     'model_state': model.state_dict(),
-                    'optimizer_state': opt.state_dict(),
+                    'optimizer_state': optimizer.state_dict(),
+                    'scheduler_state': scheduler.state_dict(),
                     'epoch': base_epoch + e,
                     'learning_rates': learning_rates,
                     'train_losses': train_losses,
@@ -157,12 +176,13 @@ def start_training(model_name, device, num_classes, class_groups, data_root, epo
                 }
                 path = os.path.join("./broken_model", f"{dataset_name}_{model_name}_{base_epoch + e}")
                 torch.save(save_dict, path)
+                print("NaN loss")
                 exit()
             l.backward()
-            opt.step()
+            optimizer.step()
             cum_loss = cum_loss + l
             cnt = cnt + inputs.shape[0]
-        y_out = torch.softmax(y_out, dim=1)
+        #y_out = torch.softmax(y_out, dim=1)
         y_pred = torch.argmax(y_out, dim=1)
         # y_true = y_true.cpu().numpy()
         # y_out = y_out.cpu().numpy()
@@ -177,15 +197,16 @@ def start_training(model_name, device, num_classes, class_groups, data_root, epo
         writer.add_scalar('Loss/train', train_loss, base_epoch + e)
         print(f"Epoch {e + 1}/{epochs} loss: {cum_loss}")  # / cnt}")
         print("\n==============\n")
-        if scheduler is not None:
-            scheduler.step()
+        learning_rates.append(scheduler.get_lr())
+        scheduler.step()
         if (e + 1) % save_each == 0:
             validation_loss = get_validation_loss(model, valds, loss, device)
             validation_losses.append(validation_loss.detach().cpu())
             validation_epochs.append(e)
             save_dict = {
                 'model_state': model.state_dict(),
-                'optimizer_state': opt.state_dict(),
+                'optimizer_state': optimizer.state_dict(),
+                'scheduler_state': scheduler.state_dict(),
                 'epoch': base_epoch + e,
                 'train_losses': train_losses,
                 'validation_losses': validation_losses,
@@ -287,7 +308,7 @@ def test_all_models(model_root_path, device, num_classes, class_groups, data_roo
     dirlist=[direc for direc in os.listdir(model_root_path) if ((os.path.isdir(os.path.join(model_root_path, direc))) and (direc != "results_all"))]
     results_dict={}
     for dir_name in dirlist:
-        print(f"Testing: {dir_name}")
+        print(f"Testing: {dir_name}")       
         results_dict[dir_name]={}
         spl=dir_name.split("_")
         model_name=f"{spl[0]}_{spl[1]}"

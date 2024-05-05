@@ -15,7 +15,7 @@ def load_explainer(xai_method, model_path, save_dir, dataset_name):
         'representer': (RepresenterPointsExplainer, {}),
         'similarity': (SimilarityExplainer, {}),
         'rp_similarity': (RPSimilarityExplainer, {"dir": save_dir, 'dimensions': 128}),
-        'tracin': (TracInExplainer, {"ckpt_dir": os.path.dirname(model_path)}),
+        #'tracin': (TracInExplainer, {"ckpt_dir": os.path.dirname(model_path)}),
         'trak': (TRAK, {'proj_dim': 512}),
         'mcsvm': (DualView, {"sanity_check": True, "dir": save_dir}),
         'gradprod': (GradientProductExplainer, {}),

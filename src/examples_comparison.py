@@ -52,7 +52,7 @@ def evaluate(model_name, model_path, device, class_groups,
     if dataset_name == "CIFAR":
         all_indices = [all_indices[i] for i in [12, 13, 15, 16, 18, 25, 30, 36, 39, 47]]
     file_lists = [[f for f in os.listdir(xpl_root) if
-                   ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f) and ("tensor" not in f)] for xpl_root in
+                   ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f) and ("tensor" not in f) and (".shark" not in f)] for xpl_root in
                   xpl_roots]
     # file_root = file_list[0].split('_')[0]
     cumul_xpl = [torch.empty(0, len(train), dtype=torch.float32) for _ in xpl_roots]
