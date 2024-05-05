@@ -48,7 +48,7 @@ def evaluate(model_name, model_path, device, class_groups,
     fname=f"{dataset_name}_{dataset_type}_{xpl_root.split('/')[-1]}"
     if not os.path.isdir(xpl_root):
         raise Exception(f"Can not find explanation directory {xpl_root}")
-    file_list = [f for f in os.listdir(xpl_root) if ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f) and ("_tensor" not in f)]
+    file_list = [f for f in os.listdir(xpl_root) if ("tgz" not in f) and ("csv" not in f) and ("coefs" not in f) and ("_tensor" not in f) and (".shark" not in f)]
     file_root = file_list[0].split('_')[0]
     cur_index = 0
     num_files=len(file_list)
