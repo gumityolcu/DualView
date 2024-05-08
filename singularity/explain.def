@@ -23,7 +23,7 @@ From: pytorch/pytorch:1.12.1-cuda11.3-cudnn8-runtime
 
   pip install zennit
   pip install tensorboard
-  pip install traker
+  pip install traker[fast]
 %runscript
 
   cd /opt/src
