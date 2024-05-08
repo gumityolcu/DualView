@@ -13,11 +13,11 @@ source "/etc/slurm/local_job_dir.sh"
 
 mkdir -p ${LOCAL_JOB_DIR}/outputs
 
-tar -czf ${LOCAL_JOB_DIR}/config_files.tgz ${HOME}/THESIS/config_files
-tar -czf ${LOCAL_JOB_DIR}/checkpoints.tgz ${HOME}/THESIS/checkpoints
+tar -czf ${LOCAL_JOB_DIR}/config_files.tgz ${HOME}/DualView/config_files
+tar -czf ${LOCAL_JOB_DIR}/checkpoints.tgz ${HOME}/DualView/checkpoints
 echo "TAR DONE"
-tar -C ${LOCAL_JOB_DIR} -zxf ${LOCAL_JOB_DIR}/config_files.tgz home/fe/yolcu/THESIS/config_files --strip-components=4
-tar -C ${LOCAL_JOB_DIR} -zxf ${LOCAL_JOB_DIR}/checkpoints.tgz home/fe/yolcu/THESIS/checkpoints --strip-components=4
+tar -C ${LOCAL_JOB_DIR} -zxf ${LOCAL_JOB_DIR}/config_files.tgz home/fe/yolcu/DualView/config_files --strip-components=4
+tar -C ${LOCAL_JOB_DIR} -zxf ${LOCAL_JOB_DIR}/checkpoints.tgz home/fe/yolcu/DualView/checkpoints --strip-components=4
 
 
 fname_config=$(basename "$1")
