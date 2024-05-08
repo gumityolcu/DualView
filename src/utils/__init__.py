@@ -170,7 +170,6 @@ def xplain(model, train, test, device, explainer_cls, batch_size, kwargs, num_ba
            start_file, num_files):
     explainer = explainer_cls(model=model, dataset=train, device=device, **kwargs)
     explainer.train()
-    explainer.save_coefs(save_dir)
 
     test_ld = DataLoader(test, batch_size=batch_size, shuffle=False)
     explanations = torch.empty((0, len(train)), device=device)
