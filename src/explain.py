@@ -48,14 +48,14 @@ def explain_model(model_name, model_path, device, class_groups,
     train, test = load_datasets_reduced(dataset_name, dataset_type, ds_kwargs)
     if dataset_name == "CIFAR":
         model = load_cifar_model(model_path, dataset_type, num_classes, device)
-    elif "ImageNet" in dataset_name:
-        model = load_imagenet_model(device)
-        if imagenet_class_ids is not None:
-            temp = torch.nn.Linear(in_features=model.classifier.in_features,
-                                   out_features=len(imagenet_class_ids), bias=True)
-            temp.weight = torch.nn.Parameter(model.classifier.weight[imagenet_class_ids])
-            temp.bias = torch.nn.Parameter(model.classifier.bias[imagenet_class_ids])
-            model.classifier = temp
+    #elif "ImageNet" in dataset_name:
+    #    model = load_imagenet_model(device)
+    #    if imagenet_class_ids is not None:
+    #        temp = torch.nn.Linear(in_features=model.classifier.in_features,
+    #                               out_features=len(imagenet_class_ids), bias=True)
+    #        temp.weight = torch.nn.Parameter(model.classifier.weight[imagenet_class_ids])
+    #        temp.bias = torch.nn.Parameter(model.classifier.bias[imagenet_class_ids])
+    #        model.classifier = temp
     else:
         model = load_model(model_name, dataset_name, num_classes).to(device)
         checkpoint = torch.load(model_path, map_location=device)

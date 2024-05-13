@@ -69,7 +69,7 @@ def load_optimizer(name, model, lr):
     return SGD(model.parameters(), lr=lr, momentum=0.9)
 
 def load_augmentation(name):
-    return None
+    return lambda x:x
 
 def load_loss(name):
     return CrossEntropyLoss()
