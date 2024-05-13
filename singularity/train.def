@@ -1,15 +1,15 @@
 Bootstrap: docker
-From: pytorch/pytorch:1.12.1-cuda11.3-cudnn8-runtime
+From: pytorch/pytorch:2.0.3-cuda11.8-cudnn8-devel
 
 %files
 
-  ../evaluation /opt
+  ../src /opt
 
 %post
 
   export "PATH=/opt/conda/bin:$PATH"
   conda install --yes \
-    python==3.7.5 \
+    python==3.10 \
     numpy \
     matplotlib \
     xmltodict \
@@ -19,11 +19,11 @@ From: pytorch/pytorch:1.12.1-cuda11.3-cudnn8-runtime
     scikit-image \
     scipy \
     seaborn \
-    termcolor \
-
+    termcolor
   pip install zennit
   pip install tensorboard
 %runscript
 
-  cd /opt/evaluation
+  cd /opt/src
+  pip install traker[fast]
   python train.py "$@"
