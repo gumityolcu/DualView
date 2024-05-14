@@ -457,6 +457,7 @@ class InfluenceFunctionExplainer(Explainer):
         return 0.
 
     def explain(self, x, preds=None, targets=None):
+        x=x.to(self.device)
         xpl=torch.empty((0,len(self.dataset)))
         for i in range(x.shape[0]):
             dp=x[i:i+1]

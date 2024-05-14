@@ -30,6 +30,7 @@ class TRAK(Explainer):
         self.traker.finalize_features()
 
     def explain(self, x, preds=None, targets=None):
+        x=x.to(self.device)
         self.traker.start_scoring_checkpoint(model_id=0,
                                              checkpoint=self.model.state_dict(),
                                              exp_name='test',
