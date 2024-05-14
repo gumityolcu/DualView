@@ -28,5 +28,5 @@ From: pytorch/pytorch:2.3.0-cuda11.8-cudnn8-devel
   cd /opt/src
   pwd
   ls
-  pip install traker[fast]
+  pip install traker[fast] --user
   python explain.py "$@"
