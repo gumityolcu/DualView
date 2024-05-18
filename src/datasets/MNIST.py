@@ -55,7 +55,7 @@ class MNIST(tvMNIST):
             print(self.val_ids)
             print("Test ids:")
             print(self.test_ids)
-            self.test_targets=torch.tensor(self.targets)[self.test_ids]
+            self.test_targets=self.targets.clone().detach()[self.test_ids]
 
 
     def __getitem__(self, item):
