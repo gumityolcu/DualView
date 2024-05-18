@@ -463,5 +463,5 @@ class InfluenceFunctionExplainer(Explainer):
             dp=x[i:i+1]
             target=preds[i:i+1]
             scores=(-1.)*self.influence_module.influences(dp, target)
-            xpl=torch.concatenate((xpl,scores[None]),dim=0)
+            xpl=torch.concatenate((xpl,scores[None].to(self.device)),dim=0)
         return xpl
