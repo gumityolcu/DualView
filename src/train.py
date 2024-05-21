@@ -71,7 +71,7 @@ def load_optimizer(name, model, lr):
 def load_augmentation(name):
     return lambda x:x
 
-def load_loss(name):
+def load_loss():
     return CrossEntropyLoss()
 
 def start_training(model_name, device, num_classes, class_groups, data_root, epochs,
