@@ -76,7 +76,8 @@ def load_loss():
 
 def start_training(model_name, device, num_classes, class_groups, data_root, epochs,
                    batch_size, lr, save_dir, save_each, model_path, base_epoch,
-                   dataset_name, dataset_type, num_batches_eval, validation_size, augmentation, optimizer, scheduler, loss):
+                   dataset_name, dataset_type, num_batches_eval, validation_size,
+                   augmentation, optimizer, scheduler, loss):
     if not torch.cuda.is_available():
         device="cpu"
     if dataset_type=="group":
@@ -221,6 +222,8 @@ def start_training(model_name, device, num_classes, class_groups, data_root, epo
                 save_dict["classes"] = ds.dataset.classes
             save_id = f"{dataset_name}_{model_name}_{base_epoch + e}"
             path = os.path.join(save_dir, save_id)
+            if not os.path.isdir(save_dir):
+                os.makedirs(save_dir, exist_ok=True)
             torch.save(save_dict, path)
             saved_files.append((path, save_id))
 
@@ -288,7 +291,6 @@ def evaluate_model(model_name, device, num_classes, class_groups, data_root, bat
         with torch.no_grad():
             logits = model(inputs)
         y_out = torch.cat((y_out, logits), 0)
-    plt.figure()
 
     results = dict()
     results["tpr"] = dict()
@@ -383,6 +385,7 @@ if __name__ == "__main__":
     #    validation_size=train_config.get('validation_size', 2000)
     #)
     #exit()
+
     start_training(model_name=train_config.get('model_name', None),
                    model_path=train_config.get('model_path', None),
                    base_epoch=train_config.get('base_epoch', 0),
@@ -394,7 +397,7 @@ if __name__ == "__main__":
                    data_root=train_config.get('data_root', None),
                    epochs=train_config.get('epochs', None),
                    batch_size=train_config.get('batch_size', None),
-                   scheduler=train_config.get('scheduler', None),
+                   lr=train_config.get('lr', 0.1),
                    augmentation=train_config.get('augmentation', None),
                    loss=train_config.get('loss', None),
                    optimizer=train_config.get('optimizer', None),
