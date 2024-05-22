@@ -122,7 +122,6 @@ def start_training(model_name, device, num_classes, class_groups, data_root, epo
         validation_epochs = checkpoint["validation_epochs"]
         val_acc = checkpoint["validation_accuracy"]
         train_acc = checkpoint["train_accuracy"]
-    model.train()
 
     for i,r in enumerate(learning_rates):
         writer.add_scalar('Metric/lr', r, i)
@@ -302,6 +301,7 @@ def evaluate_model(model_name, device, num_classes, class_groups, data_root, bat
     # y_true = y_true.cpu().numpy()
     # y_out = y_out.cpu().numpy()
     # y_pred = y_pred.cpu().numpy()
+    model.train()
     return (y_true == y_pred).sum() / y_out.shape[0]
 
 def test_all_models(model_root_path, device, num_classes, class_groups, data_root, batch_size,
