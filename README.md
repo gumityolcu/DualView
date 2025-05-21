@@ -1,6 +1,6 @@
 # THIS REPOSITORY IS UNDER CONSTRUCTION
 
-We will shortly update our paper [DualView: Data Attribution from the Dual Perspective](https://arxiv.org/abs/2402.12118) and this repository will hold all the code required to reproduce our new results!
+We will shortly update our paper [DualView: Data Attribution from the Dual Perspective](https://arxiv.org/abs/2402.12118) and this repository will hold all the code reqiured to reproduce our new results!
 
 ## DualView
 
