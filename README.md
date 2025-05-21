@@ -4,7 +4,7 @@ We will shortly update our paper [DualView: Data Attribution from the Dual Persp
 
 ## DualView
 
-DualView is a runtime-efficient Training Data Atrribution (TDA) method which produces explicitly sparse attributions. Our experiments show that DualView performs at the state-of-the-art level with minimal computational cost. Furthermore, the attributions of DualView are sparse by design, resulting in explanations that are more easily digested and analyzed by humans in practice.
+DualView is a runtime-efficient Training Data Atrribution (TDA) method which produces explicitly sparse attributions. Our experiments show that DualView performs at the state-of-the-art level with minimal computational cost, by putting multiclass-SVMs to work. Furthermore, the attributions of DualView are sparse by design, resulting in explanations that are more easily digested and analyzed by humans in practice.
 
 ![](img/fig1.png)
 
