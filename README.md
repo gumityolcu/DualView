@@ -22,7 +22,7 @@ Once explanations on vanilla datasets are generated, we can plot them using the 
     python examples_comparison.py --config_file ../config_files/comparison/MNIST.yaml
    
 Here are example results:
-![](img/CIFAR-1.png)
+![asdasd](img/CIFAR-1.png)
 ![](img/whiteMNIST-1.png)
 # Evaluating explanations
 Evaluation is done using the evaluate.py script and the results will be stored in the *results* folder.
